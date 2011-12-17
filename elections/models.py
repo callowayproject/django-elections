@@ -6,7 +6,7 @@ from .fields import TestFlagField
 class TestDataManager(models.Manager):
     """
     Redefines get_query_set() to use test data based on settings switch.
-    Provides "live" 
+    Provides "live" and "test" to specifically get those records.
     """
     
     def get_query_set(self):
@@ -122,7 +122,7 @@ class RaceCounty(models.Model):
     objects = TestDataManager()
     
     class Meta:
-        pass
+        verbose_name_plural = "Race counties"
 
     def __unicode__(self):
         return u"RaceCounty"
@@ -273,7 +273,8 @@ class CandidateOffice(models.Model):
 
 class CandidateEducation(models.Model):
     """
-    Record for each post-high-school educational institution attended by each politician.
+    Record for each post-high-school educational institution attended 
+    by each politician.
     """
     candidate = models.ForeignKey(Candidate, related_name="education")
     school_name = models.CharField(blank=True, null=True, max_length=64)
@@ -315,7 +316,8 @@ class CandidateEducation(models.Model):
         super(CandidateEducation, self).save(*args, **kwargs)
     
     def __unicode__(self):
-        return u"%s's %s in %s from %s" % (self.candidate, self.degree, self.major, self.school_name)
+        return u"%s's %s in %s from %s" % (self.candidate, self.degree, 
+            self.major, self.school_name)
 
 
 class CandidatePhone(models.Model):
