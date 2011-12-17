@@ -1,0 +1,108 @@
+{% extends "elections/base.html" %}
+
+{% block content %}
+    <h1>{{ object.full_name }}</h1>
+    <ul>
+        <li><a href="#biography">Biography</a></li>
+        <li><a href="#profile">Profile</a></li>
+        <li><a href="#campaigns">Campaigns</a></li>
+        <li><a href="#birthdata">Birth Data</a></li>
+        <li><a href="#demographics">Demographics</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="#phones">Phone Numbers</a></li>
+        <li><a href="#websites">Web Sites</a></li>
+        <li><a href="#offices">Elected Offices Held</a></li>
+        
+        
+    </ul>
+    {% if object.year_first_elected %}
+        <p><strong>First Elected in </strong> {{ object.year_first_elected }}</p>
+    {% endif %}
+    <p><strong>Residence</strong> {{ object.residence_place }}, {{ object.residence_state }}</p>
+    <div id="biography">
+        <a name="biography"></a><h2>Biography</h2>
+        {{ object.biography|safe }}
+    </div>
+    <hr>
+    <div id="profile">
+        <a name="profile"></a><h2>Profile</h2>
+        {{ object.profile|safe }}
+    </div>
+    <hr>
+    <div id="campaigns">
+        <a name="campaigns"></a><h2>Campaigns</h2>
+        {{ object.campaigns|safe }}
+    </div>
+    <hr>
+    <div id="birthdata">
+        <a name="birthdata"></a><h2>Birth Data</h2>
+        <p><strong>Birthday</strong> {{ object.birth_date }}</p>
+        <p><strong>Birth Place</strong> {{ object.birth_place }}, {{ object.birth_state }}, {{ object.birth_country }}</p>
+        
+    </div>
+    <hr>
+    <div id="demographicdata">
+        <a name="demographics"></a><h2>Demographic Data</h2>
+        <p><strong>Gender</strong> {{ object.get_gender_display }}</p>
+        <p><strong>Ethnicity</strong> {{ object.ethnicity }}</p>
+        <p><strong>Hispanic</strong> {{ object.hispanic }}</p>
+        <p><strong>Religion</strong> {{ object.religion }}</p>
+    </div>
+    <hr>
+    <div id="education">
+        <a name="education"></a><h2>Education</h2>
+        <table class="zebra-striped">
+            <tr>
+                <th>School</th>
+                <th>Type</th>
+                <th>Major</th>
+                <th>Degree</th>
+            </tr>
+        {% for school in object.education.all %}
+            <tr>
+                <td>{{ school.school_name }} {% if school.school_city %}({{ school.school_city }}, {{ school.school_state }}){% endif %}</td>
+                <td>{{ school.school_type }}</td>
+                <td>{{ school.major }}</td>
+                <td>{{ school.degree }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    </div>
+    <hr>
+    <div id="phones">
+        <a name="phones"></a><h2>Phone Numbers</h2>
+        {% for phone in object.phones.all %}
+            <p><strong>{{ phone.detail }}</strong> {{ phone.phone_number }}</a></p>
+        {% endfor %}
+    </div>
+    <hr>
+    <div id="websites">
+        <a name="websites"></a><h2>Websites</h2>
+        {% for site in object.urls.all %}
+            <p><strong>{{ site.description }}</strong> <a href="{{ site.url }}">{{ site.url }}</a></p>
+        {% endfor %}
+    </div>
+    <hr>
+    <div id="offices">
+        <a name="offices"></a><h2>Elected Offices Held</h2>
+        <table class="zebra-striped">
+            <tr>
+                <th>Party</th>
+                <th>State</th>
+                <th>Office</th>
+                <th>District Name</th>
+                <th>Status</th>
+            </tr>
+        {% for office in object.offices.all %}
+            <tr>
+                <td>{{ office.party_name }}</td>
+                <td>{{ office.state_name }}</td>
+                <td>{{ office.office }}</td>
+                <td>{{ office.district_name }}</td>
+                <td>{{ office.status_description }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    </div>
+    
+{% endblock %}

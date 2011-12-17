@@ -1,0 +1,1 @@
+ftp_path = "/PreElection_Content/images/bios"

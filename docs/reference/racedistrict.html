@@ -1,0 +1,270 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>RaceDistrict Model &mdash; django-elections 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="django-elections 0.1 documentation" href="../index.html" />
+    <link rel="up" title="Reference" href="index.html" />
+    <link rel="next" title="DistrictResult Model" href="districtresult.html" />
+    <link rel="prev" title="Candidate Model" href="candidate.html" /> 
+  </head>
+  <body>
+<div id="docstitle">
+	<p>django-elections 0.1 documentation</p>
+</div>
+<div id="header">
+	<div id="title"><h1>RaceDistrict Model</h1></div>
+	<ul id="headerButtons">
+		<li id="toc_button"><div class="headerButton"><a href="#">Table of Contents</a></div></li>
+		<li id="page_buttons">
+			<div class="headerButton"><a href="../genindex.html" title="General Index" accesskey="I">index</a></div>
+			<div class="headerButton"><a href="../py-modindex.html" title="Python Module Index" >modules</a></div>
+			<div class="headerButton"><a href="districtresult.html" title="DistrictResult Model" accesskey="N">next</a></div>
+			<div class="headerButton"><a href="candidate.html" title="Candidate Model" accesskey="P">previous</a></div>
+		</li>
+	</ul>
+</div>
+
+<div id="sphinxsidebar">
+  <div class="sphinxsidebarwrapper">
+	<ul><li class="toctree-l1"><a href="../index.html">Main Page</a></li></ul>
+	<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="settings.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="racecounty.html">RaceCounty Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="countyresult.html">CountyResult Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="candidate.html">Candidate Model</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">RaceDistrict Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="districtresult.html">DistrictResult Model</a></li>
+</ul>
+</li>
+</ul>
+
+    <div id="searchbox" style="display: none">
+      
+        <form class="search" action="../search.html" method="get">
+			<div class="search-wrapper">
+			<span class="search-left"></span>
+			<input class="prettysearch" type="text" name="q" size="18" />
+			<span class="search-right">&nbsp;</span>
+			</div>
+          <input type="submit" value="Search" class="searchbutton" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+        <p class="searchtip" style="font-size: 90%">
+        Enter search terms or a module, class or function name.
+        </p>
+    </div>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+</div>
+
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-elections.models">
+<span id="racedistrict-model"></span><h1>RaceDistrict Model<a class="headerlink" href="#module-elections.models" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="elections.models.RaceDistrict">
+<em class="property">class </em><tt class="descclassname">elections.models.</tt><tt class="descname">RaceDistrict</tt><a class="headerlink" href="#elections.models.RaceDistrict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Each <tt class="docutils literal"><span class="pre">RaceDistrict</span></tt> object contains either the information associated with a particular race in a particular district of a state, or the statewide district summary for that race.</p>
+<dl class="attribute">
+<dt id="elections.models.RaceDistrict.test_live">
+<tt class="descname">test_live</tt><a class="headerlink" href="#elections.models.RaceDistrict.test_live" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Required</strong> <tt class="docutils literal"><span class="pre">CharField(1)</span></tt></p>
+<p>Single character flag indicating test (<tt class="docutils literal"><span class="pre">t</span></tt>) vs. live (<tt class="docutils literal"><span class="pre">l</span></tt>) election results data.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.RaceDistrict.race_district_id">
+<tt class="descname">race_district_id</tt><a class="headerlink" href="#elections.models.RaceDistrict.race_district_id" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Required</strong> <tt class="docutils literal"><span class="pre">BigIntegerField</span></tt> <em>Primary Key</em></p>
+<p>The race_county_id value is for use as a unique identifier for reference from the <a class="reference internal" href="districtresult.html#elections.models.DistrictResult" title="elections.models.DistrictResult"><tt class="xref py py-class docutils literal"><span class="pre">DistrictResult</span></tt></a> model.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.RaceDistrict.race_number">
+<tt class="descname">race_number</tt><a class="headerlink" href="#elections.models.RaceDistrict.race_number" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Required</strong> <tt class="docutils literal"><span class="pre">IntegerField</span></tt></p>
+<p>AP-assigned race number. Race numbers are guaranteed to be unique only within a state.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.RaceDistrict.election_date">
+<tt class="descname">election_date</tt><a class="headerlink" href="#elections.models.RaceDistrict.election_date" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Required</strong> <tt class="docutils literal"><span class="pre">DateField</span></tt></p>
+<p>Date of the election.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.RaceDistrict.state_postal">
+<tt class="descname">state_postal</tt><a class="headerlink" href="#elections.models.RaceDistrict.state_postal" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Required</strong> <tt class="docutils literal"><span class="pre">CharField(2)</span></tt></p>
+<p>Two character state abbreviation (e.g., IA, LA, ).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.RaceDistrict.district_type">
+<tt class="descname">district_type</tt><a class="headerlink" href="#elections.models.RaceDistrict.district_type" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">CharField(16)</span></tt></p>
+<p>Abbreviation of the district type</p>
+<ul class="simple">
+<li><strong>AL</strong> At-large delegate</li>
+<li><strong>PL</strong> PLEO delegate</li>
+<li><strong>CD</strong> Congressional District</li>
+<li><strong>DD</strong> Delegate District</li>
+<li><strong>SD</strong> State Senate District</li>
+</ul>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.RaceDistrict.cd_number">
+<tt class="descname">cd_number</tt><a class="headerlink" href="#elections.models.RaceDistrict.cd_number" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">IntegerField</span></tt></p>
+<p>A unique district ID with one (1) indicating statewide summaries.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.RaceDistrict.district_name">
+<tt class="descname">district_name</tt><a class="headerlink" href="#elections.models.RaceDistrict.district_name" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">CharField(64)</span></tt></p>
+<p>Name of the district (e.g., CD 4, At-Large, etc.)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.RaceDistrict.office_id">
+<tt class="descname">office_id</tt><a class="headerlink" href="#elections.models.RaceDistrict.office_id" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Required</strong> <tt class="docutils literal"><span class="pre">CharField(1)</span></tt></p>
+<p>Single character office type ID. Only Top-of-the-ticket races (President [<tt class="docutils literal"><span class="pre">P</span></tt>], Governor [<tt class="docutils literal"><span class="pre">G</span></tt>], US Senate [<tt class="docutils literal"><span class="pre">S</span></tt>], and US House [<tt class="docutils literal"><span class="pre">H</span></tt>]) are guaranteed to be unique on a national level. All other office types are guaranteed to be unique only within a state. There are other characters used, depending on the state and local races.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.RaceDistrict.race_type_id">
+<tt class="descname">race_type_id</tt><a class="headerlink" href="#elections.models.RaceDistrict.race_type_id" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Required</strong> <tt class="docutils literal"><span class="pre">CharField(1)</span></tt></p>
+<p>National, state or local race type identifier. National identifiers are:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">D</span></tt>: Dem Primary</li>
+<li><tt class="docutils literal"><span class="pre">E</span></tt>: Dem Caucus</li>
+<li><tt class="docutils literal"><span class="pre">R</span></tt>: GOP Primary</li>
+<li><tt class="docutils literal"><span class="pre">S</span></tt>: GOP Caucus</li>
+<li><tt class="docutils literal"><span class="pre">G</span></tt>: General</li>
+</ul>
+<p>Other characters may be used, depending on the state and local races.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.RaceDistrict.seat_number">
+<tt class="descname">seat_number</tt><a class="headerlink" href="#elections.models.RaceDistrict.seat_number" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Required</strong> <tt class="docutils literal"><span class="pre">IntegerField</span></tt></p>
+<p>Integer indicating district number or an initiative number. This may be zero (0) for a statewide race.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.RaceDistrict.office_name">
+<tt class="descname">office_name</tt><a class="headerlink" href="#elections.models.RaceDistrict.office_name" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">CharField(64)</span></tt></p>
+<p>Name of the office (e.g., U.S. House, Governor, etc.).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.RaceDistrict.seat_name">
+<tt class="descname">seat_name</tt><a class="headerlink" href="#elections.models.RaceDistrict.seat_name" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">CharField(64)</span></tt></p>
+<p>The district or initiative name (e.g., District 46, 1A-Gay Marriage, etc.) This may be empty for a statewide race (e.g., a Governor race).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.RaceDistrict.race_type_party">
+<tt class="descname">race_type_party</tt><a class="headerlink" href="#elections.models.RaceDistrict.race_type_party" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">CharField(16)</span></tt></p>
+<p>Party abbreviation for the race (e.g., Dem, GOP, Lib, etc.). This may be empty for a General Election.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.RaceDistrict.race_type">
+<tt class="descname">race_type</tt><a class="headerlink" href="#elections.models.RaceDistrict.race_type" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">CharField(32)</span></tt></p>
+<p>Description of the type of race (e.g., Primary, Runoff, General).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.RaceDistrict.office_description">
+<tt class="descname">office_description</tt><a class="headerlink" href="#elections.models.RaceDistrict.office_description" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">CharField(64)</span></tt></p>
+<p>Further description of the office type.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.RaceDistrict.number_of_winners">
+<tt class="descname">number_of_winners</tt><a class="headerlink" href="#elections.models.RaceDistrict.number_of_winners" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Required</strong> <tt class="docutils literal"><span class="pre">IntegerField()</span></tt></p>
+<p>The maximum number of winners.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.RaceDistrict.precincts_reporting">
+<tt class="descname">precincts_reporting</tt><a class="headerlink" href="#elections.models.RaceDistrict.precincts_reporting" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Required</strong> <tt class="docutils literal"><span class="pre">IntegerField</span></tt></p>
+<p>The number of precincts currently reporting during the election.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.RaceDistrict.total_precincts">
+<tt class="descname">total_precincts</tt><a class="headerlink" href="#elections.models.RaceDistrict.total_precincts" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Required</strong> <tt class="docutils literal"><span class="pre">IntegerField</span></tt></p>
+<p>The total number of precincts.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div> 
+        </div>
+      </div>
+    <div class="footer">
+    <p>
+      &copy; Copyright 2010, coordt.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+	</p>
+    </div>
+      <div class="clearer"></div>
+    </div>
+	<div id="breadcrumbs">
+		<a href="index.html" accesskey="U">Reference</a><img src="../_static/triangle_closed.png" height="9" width="9" alt="&gt;">
+		RaceDistrict Model
+		</ul>
+	</div>
+	<script type="text/javascript" charset="utf-8" src="../_static/toc.js"></script>
+  </body>
+</html>

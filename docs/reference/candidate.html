@@ -1,0 +1,182 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Candidate Model &mdash; django-elections 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="django-elections 0.1 documentation" href="../index.html" />
+    <link rel="up" title="Reference" href="index.html" />
+    <link rel="prev" title="CountyResult Model" href="countyresult.html" /> 
+  </head>
+  <body>
+<div id="docstitle">
+	<p>django-elections 0.1 documentation</p>
+</div>
+<div id="header">
+	<div id="title"><h1>Candidate Model</h1></div>
+	<ul id="headerButtons">
+		<li id="toc_button"><div class="headerButton"><a href="#">Table of Contents</a></div></li>
+		<li id="page_buttons">
+			<div class="headerButton"><a href="../genindex.html" title="General Index" accesskey="I">index</a></div>
+			<div class="headerButton"><a href="../py-modindex.html" title="Python Module Index" >modules</a></div>
+			<div class="headerButton"><a href="countyresult.html" title="CountyResult Model" accesskey="P">previous</a></div>
+		</li>
+	</ul>
+</div>
+
+<div id="sphinxsidebar">
+  <div class="sphinxsidebarwrapper">
+	<ul><li class="toctree-l1"><a href="../index.html">Main Page</a></li></ul>
+	<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="settings.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="racecounty.html">RaceCounty Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="countyresult.html">CountyResult Model</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">Candidate Model</a></li>
+</ul>
+</li>
+</ul>
+
+    <div id="searchbox" style="display: none">
+      
+        <form class="search" action="../search.html" method="get">
+			<div class="search-wrapper">
+			<span class="search-left"></span>
+			<input class="prettysearch" type="text" name="q" size="18" />
+			<span class="search-right">&nbsp;</span>
+			</div>
+          <input type="submit" value="Search" class="searchbutton" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+        <p class="searchtip" style="font-size: 90%">
+        Enter search terms or a module, class or function name.
+        </p>
+    </div>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+</div>
+
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-elections.models">
+<span id="candidate-model"></span><h1>Candidate Model<a class="headerlink" href="#module-elections.models" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="elections.models.Candidate">
+<em class="property">class </em><tt class="descclassname">elections.models.</tt><tt class="descname">Candidate</tt><a class="headerlink" href="#elections.models.Candidate" title="Permalink to this definition">¶</a></dt>
+<dd><p>A candidate running in an election</p>
+<dl class="attribute">
+<dt id="elections.models.Candidate.test_live">
+<tt class="descname">test_live</tt><a class="headerlink" href="#elections.models.Candidate.test_live" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Required</strong> <tt class="docutils literal"><span class="pre">CharField(1)</span></tt></p>
+<p>Single character flag indicating test (<tt class="docutils literal"><span class="pre">t</span></tt>) vs. live (<tt class="docutils literal"><span class="pre">l</span></tt>) election results data.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.Candidate.ap_candidate_id">
+<tt class="descname">ap_candidate_id</tt><a class="headerlink" href="#elections.models.Candidate.ap_candidate_id" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Required</strong> <tt class="docutils literal"><span class="pre">IntegerField</span></tt> <em>Primary Key</em></p>
+<p>AP-assigned unique ID identifying this specific candidate.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.Candidate.candidate_number">
+<tt class="descname">candidate_number</tt><a class="headerlink" href="#elections.models.Candidate.candidate_number" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Required</strong> <tt class="docutils literal"><span class="pre">IntegerField</span></tt></p>
+<p>AP defined candidate number. Candidate numbers are guaranteed unique only within a single state. See <a class="reference internal" href="#elections.models.Candidate.politician_id" title="elections.models.Candidate.politician_id"><tt class="xref py py-attr docutils literal"><span class="pre">Candidate.politician_id</span></tt></a> field below for the unique candidate number/ID at the National level, if available.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.Candidate.first_name">
+<tt class="descname">first_name</tt><a class="headerlink" href="#elections.models.Candidate.first_name" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">CharField(64)</span></tt></p>
+<p>Candidate&#8217;s first name.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.Candidate.middle_name">
+<tt class="descname">middle_name</tt><a class="headerlink" href="#elections.models.Candidate.middle_name" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">CharField(64)</span></tt></p>
+<p>Candidate&#8217;s middle name.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.Candidate.last_name">
+<tt class="descname">last_name</tt><a class="headerlink" href="#elections.models.Candidate.last_name" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">CharField(64)</span></tt></p>
+<p>Candidate&#8217;s last name.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.Candidate.junior">
+<tt class="descname">junior</tt><a class="headerlink" href="#elections.models.Candidate.junior" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">CharField(16)</span></tt></p>
+<p>Trailing Jr or Sr, etc.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.Candidate.use_junior">
+<tt class="descname">use_junior</tt><a class="headerlink" href="#elections.models.Candidate.use_junior" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Required</strong> <tt class="docutils literal"><span class="pre">BooleanField</span></tt> <em>default:</em> <tt class="docutils literal"><span class="pre">False</span></tt></p>
+<p>Flag indicating whether The AP appends the junior suffix to the candidate&#8217;s name in reports.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.Candidate.politician_id">
+<tt class="descname">politician_id</tt><a class="headerlink" href="#elections.models.Candidate.politician_id" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">IntegerField</span></tt></p>
+<p>National Politician ID(NPID). Uniquely assigned ID for this politician, regardless of the state or races in which this politician is a candidate.</p>
+<p>Field may be empty if no unique ID has been assigned to this politician.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div> 
+        </div>
+      </div>
+    <div class="footer">
+    <p>
+      &copy; Copyright 2010, coordt.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+	</p>
+    </div>
+      <div class="clearer"></div>
+    </div>
+	<div id="breadcrumbs">
+		<a href="index.html" accesskey="U">Reference</a><img src="../_static/triangle_closed.png" height="9" width="9" alt="&gt;">
+		Candidate Model
+		</ul>
+	</div>
+	<script type="text/javascript" charset="utf-8" src="../_static/toc.js"></script>
+  </body>
+</html>

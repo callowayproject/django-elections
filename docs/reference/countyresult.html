@@ -1,0 +1,173 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>CountyResult Model &mdash; django-elections 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="django-elections 0.1 documentation" href="../index.html" />
+    <link rel="up" title="Reference" href="index.html" />
+    <link rel="prev" title="RaceCounty Model" href="racecounty.html" /> 
+  </head>
+  <body>
+<div id="docstitle">
+	<p>django-elections 0.1 documentation</p>
+</div>
+<div id="header">
+	<div id="title"><h1>CountyResult Model</h1></div>
+	<ul id="headerButtons">
+		<li id="toc_button"><div class="headerButton"><a href="#">Table of Contents</a></div></li>
+		<li id="page_buttons">
+			<div class="headerButton"><a href="../genindex.html" title="General Index" accesskey="I">index</a></div>
+			<div class="headerButton"><a href="../py-modindex.html" title="Python Module Index" >modules</a></div>
+			<div class="headerButton"><a href="racecounty.html" title="RaceCounty Model" accesskey="P">previous</a></div>
+		</li>
+	</ul>
+</div>
+
+<div id="sphinxsidebar">
+  <div class="sphinxsidebarwrapper">
+	<ul><li class="toctree-l1"><a href="../index.html">Main Page</a></li></ul>
+	<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="settings.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="racecounty.html">RaceCounty Model</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">CountyResult Model</a></li>
+</ul>
+</li>
+</ul>
+
+    <div id="searchbox" style="display: none">
+      
+        <form class="search" action="../search.html" method="get">
+			<div class="search-wrapper">
+			<span class="search-left"></span>
+			<input class="prettysearch" type="text" name="q" size="18" />
+			<span class="search-right">&nbsp;</span>
+			</div>
+          <input type="submit" value="Search" class="searchbutton" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+        <p class="searchtip" style="font-size: 90%">
+        Enter search terms or a module, class or function name.
+        </p>
+    </div>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+</div>
+
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-elections.models">
+<span id="countyresult-model"></span><h1>CountyResult Model<a class="headerlink" href="#module-elections.models" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="elections.models.CountyResult">
+<em class="property">class </em><tt class="descclassname">elections.models.</tt><tt class="descname">CountyResult</tt><a class="headerlink" href="#elections.models.CountyResult" title="Permalink to this definition">¶</a></dt>
+<dd><p>Each  <tt class="docutils literal"><span class="pre">CountyResult</span></tt> object describes the result for a particular <tt class="docutils literal"><span class="pre">Candidate</span></tt> in a particular <tt class="docutils literal"><span class="pre">RaceCounty</span></tt>.</p>
+<dl class="attribute">
+<dt id="elections.models.CountyResult.test_live">
+<tt class="descname">test_live</tt><a class="headerlink" href="#elections.models.CountyResult.test_live" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Required</strong> <tt class="docutils literal"><span class="pre">CharField(1)</span></tt></p>
+<p>Single character flag indicating test (<tt class="docutils literal"><span class="pre">t</span></tt>) vs. live (<tt class="docutils literal"><span class="pre">l</span></tt>) election results data.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.CountyResult.race_county">
+<tt class="descname">race_county</tt><a class="headerlink" href="#elections.models.CountyResult.race_county" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Required</strong> <tt class="docutils literal"><span class="pre">ForeignKey(</span></tt> <a class="reference internal" href="racecounty.html#elections.models.RaceCounty" title="elections.models.RaceCounty"><tt class="xref py py-class docutils literal"><span class="pre">RaceCounty</span></tt></a> <tt class="docutils literal"><span class="pre">)</span></tt></p>
+<p>Foreign key to a <a class="reference internal" href="racecounty.html#elections.models.RaceCounty" title="elections.models.RaceCounty"><tt class="xref py py-class docutils literal"><span class="pre">RaceCounty</span></tt></a> object.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.CountyResult.ap_candidate">
+<tt class="descname">ap_candidate</tt><a class="headerlink" href="#elections.models.CountyResult.ap_candidate" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Required</strong> <tt class="docutils literal"><span class="pre">ForeignKey(</span></tt> <a class="reference internal" href="candidate.html#elections.models.Candidate" title="elections.models.Candidate"><tt class="xref py py-class docutils literal"><span class="pre">Candidate</span></tt></a> <tt class="docutils literal"><span class="pre">)</span></tt></p>
+<p>Foreign key to a <a class="reference internal" href="candidate.html#elections.models.Candidate" title="elections.models.Candidate"><tt class="xref py py-class docutils literal"><span class="pre">Candidate</span></tt></a> object.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.CountyResult.party">
+<tt class="descname">party</tt><a class="headerlink" href="#elections.models.CountyResult.party" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">CharField(16)</span></tt></p>
+<p>The candidate&#8217;s party abbreviation. This may be different than the <tt class="docutils literal"><span class="pre">CountyResult.race_county.race_type_party</span></tt> field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.CountyResult.incumbent">
+<tt class="descname">incumbent</tt><a class="headerlink" href="#elections.models.CountyResult.incumbent" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Required</strong> <tt class="docutils literal"><span class="pre">BooleanField</span></tt> <em>default:</em> <tt class="docutils literal"><span class="pre">False</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">True</span></tt> means the candidate an incumbent.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.CountyResult.vote_count">
+<tt class="descname">vote_count</tt><a class="headerlink" href="#elections.models.CountyResult.vote_count" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Required</strong> <tt class="docutils literal"><span class="pre">IntegerField</span></tt> <em>default:</em> <tt class="docutils literal"><span class="pre">0</span></tt></p>
+<p>Candidate&#8217;s or an initiative’s vote tally.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.CountyResult.winner">
+<tt class="descname">winner</tt><a class="headerlink" href="#elections.models.CountyResult.winner" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">CharField(1)</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">X</span></tt> means candidate is the winner or the initiative received a final Yes or No vote, <tt class="docutils literal"><span class="pre">R</span></tt> means candidate advances to the runoff election. An empty value indicates a non-winner</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.CountyResult.natl_order">
+<tt class="descname">natl_order</tt><a class="headerlink" href="#elections.models.CountyResult.natl_order" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">IntegerField</span></tt></p>
+<p>Winning order of candidate in national system.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div> 
+        </div>
+      </div>
+    <div class="footer">
+    <p>
+      &copy; Copyright 2010, coordt.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+	</p>
+    </div>
+      <div class="clearer"></div>
+    </div>
+	<div id="breadcrumbs">
+		<a href="index.html" accesskey="U">Reference</a><img src="../_static/triangle_closed.png" height="9" width="9" alt="&gt;">
+		CountyResult Model
+		</ul>
+	</div>
+	<script type="text/javascript" charset="utf-8" src="../_static/toc.js"></script>
+  </body>
+</html>
