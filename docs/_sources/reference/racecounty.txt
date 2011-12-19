@@ -118,7 +118,7 @@ RaceCounty Model
 
       The maximum number of winners.
 
-   .. py::attribute:: number_in_runoff
+   .. py:attribute:: number_in_runoff
 
       ``IntegerField``
 

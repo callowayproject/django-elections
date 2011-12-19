@@ -15,3 +15,7 @@ Reference
    candidate
    racedistrict
    districtresult
+   candidateoffice
+   candidateeducation
+   candidatephone
+   candidateurl

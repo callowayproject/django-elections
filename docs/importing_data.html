@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Python Module Index &mdash; django-elections 0.2 documentation</title>
+    <title>Importing AP Data &mdash; django-elections 0.2 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -25,21 +25,22 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="django-elections 0.2 documentation" href="index.html" />
- 
-
-
+    <link rel="next" title="Reference" href="reference/index.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
   </head>
   <body>
 <div id="docstitle">
 	<p>django-elections 0.2 documentation</p>
 </div>
 <div id="header">
-	<div id="title"><h1>Python Module Index</h1></div>
+	<div id="title"><h1>Importing AP Data</h1></div>
 	<ul id="headerButtons">
 		<li id="toc_button"><div class="headerButton"><a href="#">Table of Contents</a></div></li>
 		<li id="page_buttons">
 			<div class="headerButton"><a href="genindex.html" title="General Index" accesskey="I">index</a></div>
-			<div class="headerButton"><a href="#" title="Python Module Index" >modules</a></div>
+			<div class="headerButton"><a href="py-modindex.html" title="Python Module Index" >modules</a></div>
+			<div class="headerButton"><a href="reference/index.html" title="Reference" accesskey="N">next</a></div>
+			<div class="headerButton"><a href="installation.html" title="Installation" accesskey="P">previous</a></div>
 		</li>
 	</ul>
 </div>
@@ -47,10 +48,13 @@
 <div id="sphinxsidebar">
   <div class="sphinxsidebarwrapper">
 	<ul><li class="toctree-l1"><a href="index.html">Main Page</a></li></ul>
-	<ul>
+	<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="importing_data.html">Importing AP Data</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Importing AP Data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#importing-initial-data">Importing initial data</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="reference/index.html">Reference</a></li>
 </ul>
 
@@ -81,29 +85,21 @@
         <div class="bodywrapper">
           <div class="body">
             
-
-   <h1>Python Module Index</h1>
-
-   <div class="modindex-jumpbox">
-   <a href="#cap-e"><strong>e</strong></a>
-   </div>
-
-   <table class="indextable modindextable" cellspacing="0" cellpadding="2">
-     <tr class="pcap"><td></td><td>&nbsp;</td><td></td></tr>
-     <tr class="cap" id="cap-e"><td></td><td>
-       <strong>e</strong></td><td></td></tr>
-     <tr>
-       <td><img src="_static/minus.png" class="toggler"
-              id="toggle-1" style="display: none" alt="-" /></td>
-       <td>
-       <tt class="xref">elections</tt></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&nbsp;&nbsp;&nbsp;
-       <a href="reference/racedistrict.html#module-elections.models"><tt class="xref">elections.models</tt></a></td><td>
-       <em></em></td></tr>
-   </table>
+  <div class="section" id="importing-ap-data">
+<h1>Importing AP Data<a class="headerlink" href="#importing-ap-data" title="Permalink to this headline">¶</a></h1>
+<p>Data import is idempotent, meaning importing the same file over and over doesn&#8217;t do anything. Only when imported data is different from existing data is a database write performed.</p>
+<div class="section" id="importing-initial-data">
+<h2>Importing initial data<a class="headerlink" href="#importing-initial-data" title="Permalink to this headline">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">./manage.py</span> <span class="pre">import_bios</span> <span class="pre">&lt;filename&gt;</span></tt></p>
+<p>Import candidate bios. Do this first.</p>
+<p>Do any of these next, in any order.</p>
+<p><tt class="docutils literal"><span class="pre">./manage.py</span> <span class="pre">import_calendar</span> <span class="pre">&lt;filename&gt;</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">./manage.py</span> <span class="pre">import_education</span> <span class="pre">&lt;filename&gt;</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">./manage.py</span> <span class="pre">import_offices</span> <span class="pre">&lt;filename&gt;</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">./manage.py</span> <span class="pre">import_phones</span> <span class="pre">&lt;filename&gt;</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">./manage.py</span> <span class="pre">import_urls</span> <span class="pre">&lt;filename&gt;</span></tt></p>
+</div>
+</div>
 
 
           </div> 
@@ -118,7 +114,7 @@
       <div class="clearer"></div>
     </div>
 	<div id="breadcrumbs">
-		Python Module Index
+		Importing AP Data
 		</ul>
 	</div>
 	<script type="text/javascript" charset="utf-8" src="_static/toc.js"></script>

@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Settings &mdash; django-elections 0.2 documentation</title>
+    <title>CandidatePhone Model &mdash; django-elections 0.2 documentation</title>
     
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -26,22 +26,22 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="django-elections 0.2 documentation" href="../index.html" />
     <link rel="up" title="Reference" href="index.html" />
-    <link rel="next" title="RaceCounty Model" href="racecounty.html" />
-    <link rel="prev" title="Reference" href="index.html" /> 
+    <link rel="next" title="CandidateURL Model" href="candidateurl.html" />
+    <link rel="prev" title="CandidateEducation Model" href="candidateeducation.html" /> 
   </head>
   <body>
 <div id="docstitle">
 	<p>django-elections 0.2 documentation</p>
 </div>
 <div id="header">
-	<div id="title"><h1>Settings</h1></div>
+	<div id="title"><h1>CandidatePhone Model</h1></div>
 	<ul id="headerButtons">
 		<li id="toc_button"><div class="headerButton"><a href="#">Table of Contents</a></div></li>
 		<li id="page_buttons">
 			<div class="headerButton"><a href="../genindex.html" title="General Index" accesskey="I">index</a></div>
 			<div class="headerButton"><a href="../py-modindex.html" title="Python Module Index" >modules</a></div>
-			<div class="headerButton"><a href="racecounty.html" title="RaceCounty Model" accesskey="N">next</a></div>
-			<div class="headerButton"><a href="index.html" title="Reference" accesskey="P">previous</a></div>
+			<div class="headerButton"><a href="candidateurl.html" title="CandidateURL Model" accesskey="N">next</a></div>
+			<div class="headerButton"><a href="candidateeducation.html" title="CandidateEducation Model" accesskey="P">previous</a></div>
 		</li>
 	</ul>
 </div>
@@ -54,7 +54,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../importing_data.html">Importing AP Data</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Reference</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings.html">Settings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="racecounty.html">RaceCounty Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="countyresult.html">CountyResult Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="candidate.html">Candidate Model</a></li>
@@ -62,7 +62,7 @@
 <li class="toctree-l2"><a class="reference internal" href="districtresult.html">DistrictResult Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="candidateoffice.html">CandidateOffice Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="candidateeducation.html">CandidateEducation Model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="candidatephone.html">CandidatePhone Model</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">CandidatePhone Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="candidateurl.html">CandidateURL Model</a></li>
 </ul>
 </li>
@@ -95,8 +95,52 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="settings">
-<h1>Settings<a class="headerlink" href="#settings" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-elections.models">
+<span id="candidatephone-model"></span><h1>CandidatePhone Model<a class="headerlink" href="#module-elections.models" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="elections.models.CandidatePhone">
+<em class="property">class </em><tt class="descclassname">elections.models.</tt><tt class="descname">CandidatePhone</tt><a class="headerlink" href="#elections.models.CandidatePhone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Contact phone numbers for each candidate.</p>
+<dl class="attribute">
+<dt id="elections.models.CandidatePhone.candidate">
+<tt class="descname">candidate</tt><a class="headerlink" href="#elections.models.CandidatePhone.candidate" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Required</strong> <tt class="docutils literal"><span class="pre">ForeignKey(</span></tt> <a class="reference internal" href="candidate.html#elections.models.Candidate" title="elections.models.Candidate"><tt class="xref py py-class docutils literal"><span class="pre">Candidate</span></tt></a> <tt class="docutils literal"><span class="pre">)</span></tt></p>
+<p>The <a class="reference internal" href="candidate.html#elections.models.Candidate" title="elections.models.Candidate"><tt class="xref py py-class docutils literal"><span class="pre">Candidate</span></tt></a> for this phone number.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.CandidatePhone.phone_number">
+<tt class="descname">phone_number</tt><a class="headerlink" href="#elections.models.CandidatePhone.phone_number" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">CharField(15)</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.CandidatePhone.extension">
+<tt class="descname">extension</tt><a class="headerlink" href="#elections.models.CandidatePhone.extension" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">CharField(10)</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.CandidatePhone.location">
+<tt class="descname">location</tt><a class="headerlink" href="#elections.models.CandidatePhone.location" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">CharField(64)</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.CandidatePhone.detail">
+<tt class="descname">detail</tt><a class="headerlink" href="#elections.models.CandidatePhone.detail" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">CharField(64)</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.CandidatePhone.checksum">
+<tt class="descname">checksum</tt><a class="headerlink" href="#elections.models.CandidatePhone.checksum" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Required</strong> <tt class="docutils literal"><span class="pre">CharField(32)</span></tt></p>
+<p>A calculated hash to see if imported data is different from the current data.</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -113,7 +157,7 @@
     </div>
 	<div id="breadcrumbs">
 		<a href="index.html" accesskey="U">Reference</a><img src="../_static/triangle_closed.png" height="9" width="9" alt="&gt;">
-		Settings
+		CandidatePhone Model
 		</ul>
 	</div>
 	<script type="text/javascript" charset="utf-8" src="../_static/toc.js"></script>

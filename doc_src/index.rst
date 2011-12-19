@@ -14,6 +14,7 @@ Contents:
    
    getting_started
    installation
+   importing_data
    reference/index
 
 

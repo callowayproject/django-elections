@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Candidate Model &mdash; django-elections 0.1 documentation</title>
+    <title>Candidate Model &mdash; django-elections 0.2 documentation</title>
     
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.1',
+        VERSION:     '0.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,13 +24,14 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="django-elections 0.1 documentation" href="../index.html" />
+    <link rel="top" title="django-elections 0.2 documentation" href="../index.html" />
     <link rel="up" title="Reference" href="index.html" />
+    <link rel="next" title="RaceDistrict Model" href="racedistrict.html" />
     <link rel="prev" title="CountyResult Model" href="countyresult.html" /> 
   </head>
   <body>
 <div id="docstitle">
-	<p>django-elections 0.1 documentation</p>
+	<p>django-elections 0.2 documentation</p>
 </div>
 <div id="header">
 	<div id="title"><h1>Candidate Model</h1></div>
@@ -39,6 +40,7 @@
 		<li id="page_buttons">
 			<div class="headerButton"><a href="../genindex.html" title="General Index" accesskey="I">index</a></div>
 			<div class="headerButton"><a href="../py-modindex.html" title="Python Module Index" >modules</a></div>
+			<div class="headerButton"><a href="racedistrict.html" title="RaceDistrict Model" accesskey="N">next</a></div>
 			<div class="headerButton"><a href="countyresult.html" title="CountyResult Model" accesskey="P">previous</a></div>
 		</li>
 	</ul>
@@ -50,11 +52,18 @@
 	<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../importing_data.html">Importing AP Data</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="settings.html">Settings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="racecounty.html">RaceCounty Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="countyresult.html">CountyResult Model</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">Candidate Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="racedistrict.html">RaceDistrict Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="districtresult.html">DistrictResult Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="candidateoffice.html">CandidateOffice Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="candidateeducation.html">CandidateEducation Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="candidatephone.html">CandidatePhone Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="candidateurl.html">CandidateURL Model</a></li>
 </ul>
 </li>
 </ul>
@@ -100,9 +109,17 @@
 </dd></dl>
 
 <dl class="attribute">
+<dt id="elections.models.Candidate.politician_id">
+<tt class="descname">politician_id</tt><a class="headerlink" href="#elections.models.Candidate.politician_id" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">IntegerField</span></tt> <em>Primary Key</em></p>
+<p>National Politician ID(NPID). Uniquely assigned ID for this politician, regardless of the state or races in which this politician is a candidate.</p>
+<p>Field may be empty if no unique ID has been assigned to this politician.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="elections.models.Candidate.ap_candidate_id">
 <tt class="descname">ap_candidate_id</tt><a class="headerlink" href="#elections.models.Candidate.ap_candidate_id" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Required</strong> <tt class="docutils literal"><span class="pre">IntegerField</span></tt> <em>Primary Key</em></p>
+<dd><p><strong>Required</strong> <tt class="docutils literal"><span class="pre">IntegerField</span></tt> <em>Unique</em></p>
 <p>AP-assigned unique ID identifying this specific candidate.</p>
 </dd></dl>
 
@@ -149,15 +166,155 @@
 </dd></dl>
 
 <dl class="attribute">
-<dt id="elections.models.Candidate.politician_id">
-<tt class="descname">politician_id</tt><a class="headerlink" href="#elections.models.Candidate.politician_id" title="Permalink to this definition">¶</a></dt>
+<dt id="elections.models.Candidate.year_first_elected">
+<tt class="descname">year_first_elected</tt><a class="headerlink" href="#elections.models.Candidate.year_first_elected" title="Permalink to this definition">¶</a></dt>
 <dd><p><tt class="docutils literal"><span class="pre">IntegerField</span></tt></p>
-<p>National Politician ID(NPID). Uniquely assigned ID for this politician, regardless of the state or races in which this politician is a candidate.</p>
-<p>Field may be empty if no unique ID has been assigned to this politician.</p>
+<p>The year the candidate was first elected to their current office.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.Candidate.birth_date">
+<tt class="descname">birth_date</tt><a class="headerlink" href="#elections.models.Candidate.birth_date" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">DateField</span></tt></p>
+<p>The candidate&#8217;s birth date</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.Candidate.birth_place">
+<tt class="descname">birth_place</tt><a class="headerlink" href="#elections.models.Candidate.birth_place" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">CharField(100)</span></tt></p>
+<p>The name of the place of the candidate&#8217;s birth.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.Candidate.birth_state">
+<tt class="descname">birth_state</tt><a class="headerlink" href="#elections.models.Candidate.birth_state" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">CharField(2)</span></tt></p>
+<p>The two-letter state abbreviation of the state in which the candidate was born (If in the United States).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.Candidate.birth_province">
+<tt class="descname">birth_province</tt><a class="headerlink" href="#elections.models.Candidate.birth_province" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">CharField(100)</span></tt></p>
+<p>The name of the province in which the candidate was born (If outside the United States).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.Candidate.birth_country">
+<tt class="descname">birth_country</tt><a class="headerlink" href="#elections.models.Candidate.birth_country" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">CharField(100)</span></tt></p>
+<p>The name of the country in which the candidate was born.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.Candidate.residence_place">
+<tt class="descname">residence_place</tt><a class="headerlink" href="#elections.models.Candidate.residence_place" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">CharField(100)</span></tt></p>
+<p>The name of the place in which the candidate currently lives.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.Candidate.residence_state">
+<tt class="descname">residence_state</tt><a class="headerlink" href="#elections.models.Candidate.residence_state" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">CharField(2)</span></tt></p>
+<p>The two-letter state abbreviation in which the candidate currently resides.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.Candidate.gender">
+<tt class="descname">gender</tt><a class="headerlink" href="#elections.models.Candidate.gender" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">CharField(1)</span></tt></p>
+<p>Either <tt class="docutils literal"><span class="pre">M</span></tt> for male, or <tt class="docutils literal"><span class="pre">F</span></tt> for female.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.Candidate.ethnicity">
+<tt class="descname">ethnicity</tt><a class="headerlink" href="#elections.models.Candidate.ethnicity" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">CharField(100)</span></tt></p>
+<p>The candidate&#8217;s ethnicity</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.Candidate.hispanic">
+<tt class="descname">hispanic</tt><a class="headerlink" href="#elections.models.Candidate.hispanic" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">CharField(100)</span></tt></p>
+<p>The candidate&#8217;s hispanic background</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.Candidate.religion">
+<tt class="descname">religion</tt><a class="headerlink" href="#elections.models.Candidate.religion" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">CharField(100)</span></tt></p>
+<p>The candidate&#8217;s declared practiced religion.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.Candidate.biography">
+<tt class="descname">biography</tt><a class="headerlink" href="#elections.models.Candidate.biography" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">TextField</span></tt></p>
+<p>A simple biographical narrative of the candidate.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.Candidate.profile">
+<tt class="descname">profile</tt><a class="headerlink" href="#elections.models.Candidate.profile" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">TextField</span></tt></p>
+<p>A political profile of the candidate.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.Candidate.campaigns">
+<tt class="descname">campaigns</tt><a class="headerlink" href="#elections.models.Candidate.campaigns" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">TextField</span></tt></p>
+<p>Brief information about current election campaigns.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.Candidate.timestamp">
+<tt class="descname">timestamp</tt><a class="headerlink" href="#elections.models.Candidate.timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Required</strong> <tt class="docutils literal"><span class="pre">DateTime</span></tt></p>
+<p>When the information was last modified.</p>
 </dd></dl>
 
 </dd></dl>
 
+<div class="section" id="properties">
+<h2>Properties<a class="headerlink" href="#properties" title="Permalink to this headline">¶</a></h2>
+<dl class="attribute">
+<dt id="elections.models.Candidate.full_name">
+<tt class="descclassname">Candidate.</tt><tt class="descname">full_name</tt><a class="headerlink" href="#elections.models.Candidate.full_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>The candidate&#8217;s full name, formatted correctly depending on the existence of a middle name and junior suffix.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="related-objects">
+<h2>Related Objects<a class="headerlink" href="#related-objects" title="Permalink to this headline">¶</a></h2>
+<dl class="attribute">
+<dt id="elections.models.Candidate.offices">
+<tt class="descclassname">Candidate.</tt><tt class="descname">offices</tt><a class="headerlink" href="#elections.models.Candidate.offices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Access to all related <a class="reference internal" href="candidateoffice.html#elections.models.CandidateOffice" title="elections.models.CandidateOffice"><tt class="xref py py-class docutils literal"><span class="pre">CandidateOffice</span></tt></a> records.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.Candidate.education">
+<tt class="descclassname">Candidate.</tt><tt class="descname">education</tt><a class="headerlink" href="#elections.models.Candidate.education" title="Permalink to this definition">¶</a></dt>
+<dd><p>Access to all related <a class="reference internal" href="candidateeducation.html#elections.models.CandidateEducation" title="elections.models.CandidateEducation"><tt class="xref py py-class docutils literal"><span class="pre">CandidateEducation</span></tt></a> records.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.Candidate.phones">
+<tt class="descclassname">Candidate.</tt><tt class="descname">phones</tt><a class="headerlink" href="#elections.models.Candidate.phones" title="Permalink to this definition">¶</a></dt>
+<dd><p>Access to all the <a class="reference internal" href="candidatephone.html#elections.models.CandidatePhone" title="elections.models.CandidatePhone"><tt class="xref py py-class docutils literal"><span class="pre">CandidatePhone</span></tt></a> records.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.Candidate.urls">
+<tt class="descclassname">Candidate.</tt><tt class="descname">urls</tt><a class="headerlink" href="#elections.models.Candidate.urls" title="Permalink to this definition">¶</a></dt>
+<dd><p>Access to all the <a class="reference internal" href="candidateurl.html#elections.models.CandidateURL" title="elections.models.CandidateURL"><tt class="xref py py-class docutils literal"><span class="pre">CandidateURL</span></tt></a> records.</p>
+</dd></dl>
+
+</div>
 </div>
 
 
@@ -166,7 +323,7 @@
       </div>
     <div class="footer">
     <p>
-      &copy; Copyright 2010, coordt.
+      &copy; Copyright 2011, Corey Oordt.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
 	</p>
     </div>

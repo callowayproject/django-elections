@@ -1,0 +1,197 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>CandidateEducation Model &mdash; django-elections 0.2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="django-elections 0.2 documentation" href="../index.html" />
+    <link rel="up" title="Reference" href="index.html" />
+    <link rel="next" title="CandidatePhone Model" href="candidatephone.html" />
+    <link rel="prev" title="CandidateOffice Model" href="candidateoffice.html" /> 
+  </head>
+  <body>
+<div id="docstitle">
+	<p>django-elections 0.2 documentation</p>
+</div>
+<div id="header">
+	<div id="title"><h1>CandidateEducation Model</h1></div>
+	<ul id="headerButtons">
+		<li id="toc_button"><div class="headerButton"><a href="#">Table of Contents</a></div></li>
+		<li id="page_buttons">
+			<div class="headerButton"><a href="../genindex.html" title="General Index" accesskey="I">index</a></div>
+			<div class="headerButton"><a href="../py-modindex.html" title="Python Module Index" >modules</a></div>
+			<div class="headerButton"><a href="candidatephone.html" title="CandidatePhone Model" accesskey="N">next</a></div>
+			<div class="headerButton"><a href="candidateoffice.html" title="CandidateOffice Model" accesskey="P">previous</a></div>
+		</li>
+	</ul>
+</div>
+
+<div id="sphinxsidebar">
+  <div class="sphinxsidebarwrapper">
+	<ul><li class="toctree-l1"><a href="../index.html">Main Page</a></li></ul>
+	<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../importing_data.html">Importing AP Data</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="settings.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="racecounty.html">RaceCounty Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="countyresult.html">CountyResult Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="candidate.html">Candidate Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="racedistrict.html">RaceDistrict Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="districtresult.html">DistrictResult Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="candidateoffice.html">CandidateOffice Model</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">CandidateEducation Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="candidatephone.html">CandidatePhone Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="candidateurl.html">CandidateURL Model</a></li>
+</ul>
+</li>
+</ul>
+
+    <div id="searchbox" style="display: none">
+      
+        <form class="search" action="../search.html" method="get">
+			<div class="search-wrapper">
+			<span class="search-left"></span>
+			<input class="prettysearch" type="text" name="q" size="18" />
+			<span class="search-right">&nbsp;</span>
+			</div>
+          <input type="submit" value="Search" class="searchbutton" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+        <p class="searchtip" style="font-size: 90%">
+        Enter search terms or a module, class or function name.
+        </p>
+    </div>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+</div>
+
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-elections.models">
+<span id="candidateeducation-model"></span><h1>CandidateEducation Model<a class="headerlink" href="#module-elections.models" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="elections.models.CandidateEducation">
+<em class="property">class </em><tt class="descclassname">elections.models.</tt><tt class="descname">CandidateEducation</tt><a class="headerlink" href="#elections.models.CandidateEducation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Post-secondary education received for each candidate.</p>
+<dl class="attribute">
+<dt id="elections.models.CandidateEducation.candidate">
+<tt class="descname">candidate</tt><a class="headerlink" href="#elections.models.CandidateEducation.candidate" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Required</strong> <tt class="docutils literal"><span class="pre">ForeignKey(</span></tt> <a class="reference internal" href="candidate.html#elections.models.Candidate" title="elections.models.Candidate"><tt class="xref py py-class docutils literal"><span class="pre">Candidate</span></tt></a> <tt class="docutils literal"><span class="pre">)</span></tt></p>
+<p>The <a class="reference internal" href="candidate.html#elections.models.Candidate" title="elections.models.Candidate"><tt class="xref py py-class docutils literal"><span class="pre">Candidate</span></tt></a> that held or holds this office.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.CandidateEducation.school_name">
+<tt class="descname">school_name</tt><a class="headerlink" href="#elections.models.CandidateEducation.school_name" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">CharField(64)</span></tt></p>
+<p>The full name of the school or institution.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.CandidateEducation.school_type">
+<tt class="descname">school_type</tt><a class="headerlink" href="#elections.models.CandidateEducation.school_type" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">CharField(64)</span></tt></p>
+<p>Typically <tt class="docutils literal"><span class="pre">Undergraduate</span></tt> or <tt class="docutils literal"><span class="pre">Graduate</span></tt>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.CandidateEducation.major">
+<tt class="descname">major</tt><a class="headerlink" href="#elections.models.CandidateEducation.major" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">CharField(64)</span></tt></p>
+<p>The subject studied at the institution.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.CandidateEducation.degree">
+<tt class="descname">degree</tt><a class="headerlink" href="#elections.models.CandidateEducation.degree" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">CharField(64)</span></tt></p>
+<p>The initials of the degree earned, or <tt class="docutils literal"><span class="pre">Attended</span></tt>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.CandidateEducation.school_city">
+<tt class="descname">school_city</tt><a class="headerlink" href="#elections.models.CandidateEducation.school_city" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">CharField(100)</span></tt></p>
+<p>The name of the city in which the institution resides.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.CandidateEducation.school_state">
+<tt class="descname">school_state</tt><a class="headerlink" href="#elections.models.CandidateEducation.school_state" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">CharField(2)</span></tt></p>
+<p>The two-letter abbreviation for the state in which the institution resides (for US-based institutions).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.CandidateEducation.school_province">
+<tt class="descname">school_province</tt><a class="headerlink" href="#elections.models.CandidateEducation.school_province" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">CharField(100)</span></tt></p>
+<p>The name of the province in which the institution resides (for non-US-based institutions).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.CandidateEducation.school_country">
+<tt class="descname">school_country</tt><a class="headerlink" href="#elections.models.CandidateEducation.school_country" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">CharField(64)</span></tt></p>
+<p>The country in which the institution resides.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="elections.models.CandidateEducation.checksum">
+<tt class="descname">checksum</tt><a class="headerlink" href="#elections.models.CandidateEducation.checksum" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Required</strong> <tt class="docutils literal"><span class="pre">CharField(32)</span></tt></p>
+<p>A calculated hash to see if imported data is different from the current data.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div> 
+        </div>
+      </div>
+    <div class="footer">
+    <p>
+      &copy; Copyright 2011, Corey Oordt.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+	</p>
+    </div>
+      <div class="clearer"></div>
+    </div>
+	<div id="breadcrumbs">
+		<a href="index.html" accesskey="U">Reference</a><img src="../_static/triangle_closed.png" height="9" width="9" alt="&gt;">
+		CandidateEducation Model
+		</ul>
+	</div>
+	<script type="text/javascript" charset="utf-8" src="../_static/toc.js"></script>
+  </body>
+</html>
