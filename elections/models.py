@@ -225,7 +225,7 @@ class CandidateOffice(models.Model):
     status_id = models.CharField(blank=True, null=True, max_length=1)
     office = models.CharField(blank=True, null=True, max_length=64)
     state_name = models.CharField(blank=True, null=True, max_length=100)
-    district_name = models.CharField(blank=True, null=True, max_length=2)
+    district_name = models.CharField(blank=True, null=True, max_length=32)
     party_name = models.CharField(blank=True, null=True, max_length=32)
     office_description = models.CharField(blank=True, null=True, max_length=64)
     status_description = models.CharField(blank=True, null=True, max_length=64)
@@ -306,7 +306,7 @@ class CandidateEducation(models.Model):
         
         
     class Meta:
-        pass
+        verbose_name_plural = 'education'
     
     def save(self, *args, **kwargs):
         """
