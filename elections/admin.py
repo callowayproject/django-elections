@@ -29,6 +29,7 @@ class CandidateAdmin(admin.ModelAdmin):
     list_display = ('full_name', 'timestamp',)
     list_filter = ('gender', 'religion', 'ethnicity',)
     search_fields = ('last_name', 'first_name')
+    prepopulated_fields = {"slug": ('first_name', 'middle_name', 'last_name', 'junior', 'politician_id')}
     
     fieldsets = (
         (None, {
@@ -41,7 +42,7 @@ class CandidateAdmin(admin.ModelAdmin):
             'fields': ('birth_date', ('birth_place', 'birth_state', 'birth_country'), 'birth_province',)
         }),
         ('Other Info', {
-            'fields': ('year_first_elected', 'biography', 'profile', 'campaigns')
+            'fields': ('year_first_elected', 'biography', 'profile', 'campaigns', 'slug', 'politician_id',)
         })
     )
     
@@ -62,6 +63,6 @@ admin.site.register(CountyResult)
 admin.site.register(DistrictResult)
 admin.site.register(Candidate, CandidateAdmin)
 admin.site.register(ElectionEvent, ElectionEventAdmin)
-# admin.site.register(CandidateOffice)
-# admin.site.register(CandidateEducation)
-# admin.site.register(CandidatePhone)
+admin.site.register(CandidateOffice)
+admin.site.register(CandidateEducation)
+admin.site.register(CandidatePhone)

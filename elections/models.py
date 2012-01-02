@@ -37,6 +37,7 @@ class Candidate(models.Model):
     """
     test_flag = TestFlagField()
     politician_id = models.IntegerField(primary_key=True)
+    slug = models.SlugField()
     ap_candidate_id = models.IntegerField(unique=True)
     candidate_number = models.IntegerField()
     first_name = models.CharField(blank=True, null=True, max_length=64)
@@ -83,7 +84,17 @@ class Candidate(models.Model):
         """
         Get the absolute url for the candidate
         """
-        return ('candidate_detail', (), {'pk': self.politician_id })
+        return ('candidate_detail', (), {'slug': self.slug })
+    
+    def save(self, *args, **kwargs):
+        """
+        Make sure the slug is created when imported
+        """
+        if not self.slug:
+            from django.template.defaultfilters import slugify
+            
+            self.slug = slugify("%s %s" % (self.full_name.replace(",", ""), self.politician_id))
+        super(Candidate, self).save(*args, **kwargs)
     
     objects = TestDataManager()
     
@@ -261,11 +272,10 @@ class CandidateOffice(models.Model):
         super(CandidateOffice, self).save(*args, **kwargs)
 
     class Meta:
-        pass
+        ordering = ['state', 'office', 'district_name']
 
     def __unicode__(self):
         name = [
-            self.party_id or '', 
             self.state or '', 
             self.office or '', 
             self.district_name or '',]
