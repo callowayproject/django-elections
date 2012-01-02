@@ -1,0 +1,39 @@
+{% extends "elections/base.html" %}
+{% block content %}
+<h1>{{ state }} Election Information</h1>
+<ul>
+    <li><a href="#offices">Offices</a></li>
+    <li><a href="#events">Events</a></li>
+</ul>
+<h2>Current Offices<a name="offices"></a></h2>
+<table class="zebra-striped">
+    <tr>
+        <th>Office</th>
+        <th>Candidate</th>
+        <th>Party</th>
+        <th>Next Election</th>
+    </tr>
+{% for office in offices %}
+    <tr>
+        <td>{{ office }}</td>
+        <td><a href="{{ office.candidate.get_absolute_url }}">{{ office.candidate }}</a></td>
+        <td>{{ office.party_name }}</td>
+        <td>{{ office.next_election }}</td>
+    </tr>
+{% endfor %}
+</table>
+
+<h2>Events<a name="events"></a></h2>
+<table class="zebra-striped">
+    <tr>
+        <th>Date</th>
+        <th>Description</th>
+    </tr>
+{% for event in events %}
+    <tr>
+        <td>{{ event.event_date }}</td>
+        <td>{{ event.description }}</td>
+    </tr>
+{% endfor %}
+</table>
+{% endblock %}

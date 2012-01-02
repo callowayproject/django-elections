@@ -16,3 +16,9 @@ urlpatterns = patterns('',
     # url(r'^state/pacs/$'),
     
 )
+
+urlpatterns += patterns('',
+    url(r'^(?P<state>[A-Z][A-Z])/$', 'elections.views.state_detail', name="state_election_details"),
+    url(r'^(?P<state>\w\w)/$', 'elections.views.lc_state_redirect', name="lc_state_redirect"),
+    
+)
