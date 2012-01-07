@@ -15,12 +15,19 @@ def state_detail(request, state):
     Get a list of stuff for the state
     """
     offices = CandidateOffice.objects.filter(state=state, status_id__in=["I", "Q"])
+    office_groups = {}
+    for ofc in offices:
+        if ofc.office in office_groups:
+            office_groups[ofc.office].append(ofc)
+        else:
+            office_groups[ofc.office] = [ofc]
     events = ElectionEvent.objects.filter(state=state)
     if offices:
         return render_to_response(
             "elections/state_detail.html", 
             {
-                "offices": offices,
+                "offices": office_groups,
+                "all_offices": offices,
                 "state": offices[0].state_name,
                 "events": events,
             },

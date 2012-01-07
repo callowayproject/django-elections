@@ -6,22 +6,29 @@
     <li><a href="#events">Events</a></li>
 </ul>
 <h2>Current Offices<a name="offices"></a></h2>
-<table class="zebra-striped">
-    <tr>
-        <th>Office</th>
-        <th>Candidate</th>
-        <th>Party</th>
-        <th>Next Election</th>
-    </tr>
-{% for office in offices %}
-    <tr>
-        <td>{{ office }}</td>
-        <td><a href="{{ office.candidate.get_absolute_url }}">{{ office.candidate }}</a></td>
-        <td>{{ office.party_name }}</td>
-        <td>{{ office.next_election }}</td>
-    </tr>
+{% for office_name, offices in offices.items %}
+    <h3>{{ office_name }}</h3>
+    <table class="zebra-striped">
+        <tr>
+            <th>Office</th>
+            <th>Candidate</th>
+            <th>Party</th>
+            <th>Next Election</th>
+        </tr>
+    {% for office in offices %}
+        <tr>
+            <td>{{ office }}</td>
+            <td>{% if office.thumbnail %}
+                <a href="{{ office.candidate.get_absolute_url }}"><img src="{{ office.thumbnail.url }}" width="{{ office.thumbnail_width}}" height="{{ office.thumbnail_height}}" alt="{{ office.candidate }}"></a>
+            {% endif %}
+            <a href="{{ office.candidate.get_absolute_url }}">{{ office.candidate }}</a></td>
+            <td>{{ office.party_name }}</td>
+            <td>{{ office.next_election }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+    
 {% endfor %}
-</table>
 
 <h2>Events<a name="events"></a></h2>
 <table class="zebra-striped">
