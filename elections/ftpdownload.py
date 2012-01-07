@@ -45,8 +45,9 @@ class SimpleFTP(object):
         while self.attempts <= self.max_attempts:
             try:
                 dest = open(local_path, 'wb')
-                self.ftp.retrbinary('RETR %s' % remote_path, dest.write)
+                self.ftp.retrbinary('RETR %s' % remote_file, dest.write)
             except ftplib.all_errors, e:
+                print e
                 self.connect()
                 continue
             else:
