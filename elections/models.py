@@ -1,7 +1,11 @@
 from django.db import models
+from django.db.models import get_model
+from django.core.files.storage import get_storage_class
 
-from .settings import TEST_DATA_ONLY
+from .settings import TEST_DATA_ONLY, IMAGE_MODEL, IMAGE_STORAGE
 from .fields import TestFlagField
+
+STORAGE_MODEL = get_storage_class(IMAGE_STORAGE)
 
 class TestDataManager(models.Manager):
     """
@@ -64,6 +68,29 @@ class Candidate(models.Model):
     profile = models.TextField(blank=True, null=True)
     campaigns = models.TextField(blank=True, null=True)
     timestamp = models.DateTimeField(blank=True, null=True)
+    if IMAGE_MODEL:
+        photo_fk = models.ForeignKey(
+            get_model(IMAGE_MODEL), 
+            blank=True, 
+            null=True)
+        thumbnail_tk = models.ForeignKey(
+            get_model(IMAGE_MODEL), 
+            blank=True, 
+            null=True)
+    photo = models.FileField(
+        upload_to='elections', 
+        storage=STORAGE_MODEL(),
+        blank=True,
+        null=True)
+    photo_width = models.IntegerField(blank=True, null=True)
+    photo_height = models.IntegerField(blank=True, null=True)
+    thumbnail = models.FileField(
+        upload_to='elections/thumbs/', 
+        storage=STORAGE_MODEL(),
+        blank=True,
+        null=True)
+    thumbnail_width = models.IntegerField(blank=True, null=True)
+    thumbnail_height = models.IntegerField(blank=True, null=True)
 
     @property
     def full_name(self):

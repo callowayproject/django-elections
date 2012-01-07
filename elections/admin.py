@@ -3,6 +3,12 @@ from .models import (Candidate, RaceCounty, RaceDistrict, CountyResult,
                     DistrictResult, CandidateOffice, CandidateEducation, 
                     CandidateOffice, CandidatePhone, CandidateURL, 
                     ElectionEvent)
+from .settings import IMAGE_MODEL
+
+if IMAGE_MODEL:
+    IMAGE_FIELDS = ('photo_fk', 'photo', 'thumbnail_fk', 'thumbnail')
+else:
+    IMAGE_FIELDS = ('photo', 'thumbnail')
 
 class EducationInline(admin.TabularInline):
     model = CandidateEducation
@@ -33,7 +39,7 @@ class CandidateAdmin(admin.ModelAdmin):
     
     fieldsets = (
         (None, {
-            'fields': (('first_name', 'middle_name', 'last_name', 'junior'), ('residence_place', 'residence_state')),
+            'fields': (('first_name', 'middle_name', 'last_name', 'junior'), ('residence_place', 'residence_state'),),
         }),
         ('Demographics', {
             'fields': ('gender', ('ethnicity', 'hispanic'), 'religion',)
@@ -43,7 +49,10 @@ class CandidateAdmin(admin.ModelAdmin):
         }),
         ('Other Info', {
             'fields': ('year_first_elected', 'biography', 'profile', 'campaigns', 'slug', 'politician_id',)
-        })
+        }),
+        ('Images', {
+            'fields': IMAGE_FIELDS
+        }),
     )
     
     inlines = [
