@@ -118,3 +118,8 @@ INSTALLED_APPS = (
     # 'django.contrib.staticfiles',
     'elections',
 )
+
+try:
+    from local_settings import *
+except ImportError:
+    pass
