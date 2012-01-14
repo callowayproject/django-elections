@@ -1,0 +1,18 @@
+{% extends "elections/base.html" %}
+{% block content %}
+<h1>{{ pac_name }} ({{ fec_pac_id}})</h1>
+<table class="zebra-striped">
+    <tr>
+        <th>Recieving Committee</th>
+        <th>Date</th>
+        <th>Amount</th>
+    </tr>
+{% for contrib in contributions %}
+    <tr>
+        <td>{{ contrib.recipient_committee }}{% if contrib.candidate %} (<a href="{{ contrib.candidate.get_absolute_url }}">{{ contrib.candidate }}</a>){% endif %}</td>
+        <td>{{ contrib.date_given }}</td>
+        <td>{{ contrib.amount }}</td>
+    </tr>
+{% endfor %}
+</table>
+{% endblock %}
