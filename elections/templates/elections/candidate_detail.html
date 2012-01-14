@@ -12,7 +12,7 @@
         <li><a href="#phones">Phone Numbers</a></li>
         <li><a href="#websites">Web Sites</a></li>
         <li><a href="#offices">Elected Offices Held</a></li>
-        
+        <li><a href="#paccontributions">PAC Contributions</a></li>
         
     </ul>
     {% if object.year_first_elected %}
@@ -104,5 +104,26 @@
         {% endfor %}
         </table>
     </div>
-    
+    <hr>
+    <div id="paccontributions">
+        <a name="paccontributions"></a><h2>PAC Contributions</h2>
+        {% if object.pac_contributions.all %}
+        <table class="zebra-striped">
+            <tr>
+                <th>PAC</th>
+                <th>Date</th>
+                <th>Amount</th>
+            </tr>
+        {% for contrib in object.pac_contributions.all %}
+            <tr>
+                <td><a href={% url pac_detail contrib.slug %}>{{ contrib.pac_name|safe }}</a></td>
+                <td>{{ contrib.date_given }}</td>
+                <td>{{ contrib.amount }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+        {% else %}
+        <p>None</p>
+        {% endif %}
+    </div>
 {% endblock %}

@@ -6,6 +6,11 @@
     <li><a href="#events">Events</a></li>
 </ul>
 <h2>Current Offices<a name="offices"></a></h2>
+{{ offices }}
+{% for office in offices.Senate %}
+    {{ office }}
+{% endfor %}
+-----------
 {% for office_name, offices in offices.items %}
     <h3>{{ office_name }}</h3>
     <table class="zebra-striped">

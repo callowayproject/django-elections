@@ -8,7 +8,7 @@ from django.utils.translation import ugettext, ugettext_lazy as _
 from .models import (Candidate, RaceCounty, RaceDistrict, CountyResult, 
                     DistrictResult, CandidateOffice, CandidateEducation, 
                     CandidateOffice, CandidatePhone, CandidateURL, 
-                    ElectionEvent)
+                    ElectionEvent, PACContribution)
 
 def state_detail(request, state):
     """
@@ -40,4 +40,17 @@ def lc_state_redirect(request, state):
     Redirect a mixed- or lower- case state into an upper case state
     """
     return HttpResponseRedirect(reverse('state_election_details', kwargs={'state': state.upper()}))
-    
+
+def pac_detail(request, slug):
+    contributions = PACContribution.objects.filter(slug=slug)
+    if contributions:
+        return render_to_response(
+            "elections/pac_detail.html", 
+            {
+                "pac_name": contributions[0].pac_name,
+                "fec_pac_id": contributions[0].fec_pac_id,
+                "contributions": contributions,
+            },
+            context_instance=RequestContext(request))
+    else:
+        raise Http404
