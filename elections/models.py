@@ -555,3 +555,78 @@ class ElectionEvent(models.Model):
 
     def __unicode__(self):
         return u" ".join([self.state, self.event_date.isoformat(), self.description])
+
+class PACContribution(models.Model):
+    """
+    An individual campaign contributions of $2,000 or more made by a
+    Political Action Committee.
+    """
+    fec_record_number = models.CharField(primary_key=True, max_length=7)
+    fec_pac_id = models.CharField(max_length=11)
+    pac_name = models.CharField(blank=True, max_length=100)
+    recipient_committee = models.CharField(blank=True, max_length=100)
+    candidate = models.ForeignKey(Candidate, related_name="pac_contributions", blank=True, null=True)
+    office_id = models.CharField(blank=True, null=True, max_length=1)
+    state = models.CharField(blank=True, null=True, max_length=2)
+    district_number = models.IntegerField(blank=True, null=True)
+    party_id = models.CharField(blank=True, null=True, max_length=16)
+    fec_candidate_id = models.CharField(blank=True, null=True, max_length=10)
+    # LastName
+    # FirstName
+    # MiddleName
+    office = models.CharField(blank=True, null=True, max_length=64)
+    state_name = models.CharField(blank=True, null=True, max_length=100)
+    district_name = models.CharField(blank=True, null=True, max_length=32)
+    party_name = models.CharField(blank=True, null=True, max_length=32)
+    date_given = models.DateField()
+    amount = models.IntegerField()
+    slug = models.SlugField()
+    checksum = models.CharField(max_length=32)
+    
+    def calculate_checksum(self):
+        """
+        Calculate the MD5 checksum for the record
+        """
+        import hashlib
+        checksum = hashlib.md5()
+        checksum.update(self.fec_record_number)
+        checksum.update(self.fec_pac_id)
+        checksum.update(self.pac_name or '')
+        checksum.update(self.recipient_committee or '')
+        if self.candidate:
+            checksum.update(str(self.candidate.pk))
+        else:
+            checksum.update('')
+        checksum.update(self.office_id or '')
+        checksum.update(self.state or '')
+        checksum.update(str(self.district_number) or '')
+        checksum.update(self.party_id or '')
+        checksum.update(self.fec_candidate_id or '')
+        checksum.update(self.office or '')
+        checksum.update(self.state_name or '')
+        checksum.update(self.district_name or '')
+        checksum.update(self.party_name or '')
+        if self.date_given:
+            checksum.update(self.date_given.isoformat())
+        else:
+            checksum.update('')
+        checksum.update(str(self.amount) or '')
+        return checksum.hexdigest()
+    
+    def save(self, *args, **kwargs):
+        """
+        Add the checksum
+        """
+        self.checksum = self.calculate_checksum()
+        if not self.slug:
+            from django.template.defaultfilters import slugify
+            
+            self.slug = slugify("%s %s" % (self.pac_name[:48], self.fec_pac_id))
+        super(PACContribution, self).save(*args, **kwargs)
+
+    class Meta:
+        ordering = ['-date_given',]
+
+    def __unicode__(self):
+        return u"%s gave $%s to %s on %s ".join(self.pac_name, self.amount, 
+            self.recipient_committee, self.event_date.isoformat())
