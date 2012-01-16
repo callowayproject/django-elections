@@ -621,7 +621,7 @@ class PACContribution(models.Model):
         if not self.slug:
             from django.template.defaultfilters import slugify
             
-            self.slug = slugify("%s %s" % (self.pac_name[:48], self.fec_pac_id))
+            self.slug = slugify("%s %s" % (self.pac_name[:38], self.fec_pac_id))
         super(PACContribution, self).save(*args, **kwargs)
 
     class Meta:
