@@ -9,6 +9,7 @@ DEFAULT_SETTINGS = {
     'DEST_PATH': '/tmp/election/',
     'IMAGE_MODEL': None,
     'IMAGE_STORAGE': settings.DEFAULT_FILE_STORAGE,
+    'MAP_RESULTS_DEST': '',
 }
 
 USER_SETTINGS = DEFAULT_SETTINGS.copy()
