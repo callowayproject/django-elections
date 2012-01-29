@@ -8,11 +8,6 @@ In order to use this library, you must pay AP for access to the data.
 
 More information can be found on the AP's web site (http://www.apdigitalnews.com/ap_elections.html)
 or by contacting Anthony Marquez at amarquez@ap.org.
-
-__author__ = 'The Los Angeles Times Data Desk'
-__author_email__ ='datadesk@latimes.com'
-__url__ ='http://datadesk.github.com/python-elections/'
-__version__ = '0.11'
 """
 import os
 import csv
@@ -92,6 +87,7 @@ class AP(object):
         result = Nation(self, election_date, **kwargs)
         self.ftp.quit()
         return result
+    
     #
     # Private methods
     #
@@ -293,7 +289,6 @@ class State(object):
         for k in kwargs.keys():
             races = filter(lambda x: getattr(x, k) == kwargs[k], races)
         return races
-        
 
     @property
     def reporting_units(self):
@@ -408,6 +403,7 @@ class State(object):
                 num_winners = int(race['ra_num_winners']),
                 party = race['rt_party_name'],
                 uncontested = race['ra_uncontested'] == '1',
+                state = race['st_postal'],
             )
             # And add it to the global store
             self._races.update({race.ap_race_number: race})
@@ -419,9 +415,12 @@ class State(object):
         # Get the data
         ru_list = self.client._fetch_csv(self.reporting_unit_file_path)
         # Loop through them all
-        for r in ru_list:
+        for race in self.races:
             # Create ReportingUnit objects for each race
-            for race in self.races:
+            for r in ru_list:
+                if r['st_postal'] != race._state:
+                    continue
+                
                 ru = ReportingUnit(
                     name = r['ru_name'],
                     ap_number = r['ru_number'],
@@ -432,18 +431,18 @@ class State(object):
                 )
                 # And add them to the global store
                 race._reporting_units.update({ru.ap_number: ru})
-            # We add a set of reportingunits for the State object
-            # so you can get county and state voter info from the
-            # State object itself. 
-            ru = ReportingUnit(
-                name = r['ru_name'],
-                ap_number = r['ru_number'],
-                fips = r['ru_fip'],
-                abbrev = r['ru_abbrv'],
-                precincts_total = int(r['ru_precincts']),
-                num_reg_voters = int(r['ru_reg_voters']),
-            )
-            self._reporting_units.update({ru.ap_number: ru})
+                # We add a set of reportingunits for the State object
+                # so you can get county and state voter info from the
+                # State object itself. 
+                ru = ReportingUnit(
+                    name = r['ru_name'],
+                    ap_number = r['ru_number'],
+                    fips = r['ru_fip'],
+                    abbrev = r['ru_abbrv'],
+                    precincts_total = int(r['ru_precincts']),
+                    num_reg_voters = int(r['ru_reg_voters']),
+                )
+                self._reporting_units.update({ru.ap_number: ru})
     
     def _get_flat_delegates(self):
         """
@@ -562,6 +561,7 @@ class State(object):
             fips =row['fips']
             is_state = row['county_number'] == '1'
             county_number = str(row['county_number'])
+            state = row['state_postal']
             
             # AP stupidly strips leading 0s in the FIPS for the 
             # results file. This fixes em.
@@ -697,7 +697,7 @@ class Race(object):
                  office_id=None, seat_name=None, seat_number=None, scope=None,
                  date=None, num_winners=None, race_type=None, party=None, uncontested=None,
                  precincts_total=None, precincts_reporting=None,
-                 precincts_reporting_percent=None, votes_cast=None):
+                 precincts_reporting_percent=None, votes_cast=None, state=None):
         self.ap_race_number = ap_race_number
         self.office_name = office_name
         self.office_description = office_description
@@ -710,6 +710,7 @@ class Race(object):
         self.race_type = race_type
         self.party = party
         self.uncontested = uncontested
+        self._state = state
         self._candidates = {}
         self._reporting_units = {}
     
@@ -772,6 +773,9 @@ class Race(object):
         """
         Returns the state-level results for this race as a ReportingUnit object.
         """
+        # if self._state:
+        #     return self._state
+        # else:
         return [o for o in self.reporting_units if o.is_state][0]
     
     @property
@@ -896,7 +900,7 @@ class ReportingUnit(object):
         
         If no votes are in, it returns the candidates in alphabetical order.
         """
-        if self.precincts_reporting:
+        if self.votes_cast:
             return sorted(self._results.values(), key=lambda x: x.vote_total,
                 reverse=True)
         else:
