@@ -38,7 +38,7 @@ def parse_race(race):
             'vote_percent': 0, 
             'delegates': cand.delegates,
         })
-    
+    candidate_colors['No winner'] = "#999"
     candidates.sort(key=lambda x: x['vote_total'], reverse=True)
     for cand in candidates:
         if total_votes:
@@ -58,15 +58,25 @@ def parse_race(race):
             "results": []
         }
         for result in county.results:
+            if result.vote_total is None:
+                vote_total = 0
+            else:
+                vote_total = result.vote_total
+            if result.vote_total_percent is None:
+                vote_total_percent = 0.0
+            else:
+                vote_total_percent = result.vote_total_percent
             county_results[county.fips]['results'].append({
                 "ap_natl_number": result.candidate.ap_natl_number,
                 "name": result.candidate.name,
-                "vote_total": result.vote_total,
-                "vote_total_percent": round(result.vote_total_percent, 1),
+                "vote_total": vote_total,
+                "vote_total_percent": round(vote_total_percent, 1),
             })
-            if result.vote_total > winning_votes:
-                winning_votes = result.vote_total
+            if vote_total > winning_votes:
+                winning_votes = vote_total
                 county_winners[county.fips] = result.candidate.ap_natl_number
+            elif vote_total == winning_votes:
+                county_winners[county.fips] = 'No winner'
         county_results[county.fips]['results'].sort(key=lambda x: x['vote_total'], reverse=True)
     
     return {
