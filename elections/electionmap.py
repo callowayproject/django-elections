@@ -89,7 +89,7 @@ def parse_race(race):
 def write_results(electiondate):
     # Use county_winners to color states using candidate_colors
     client = AP(FTP_USER, FTP_PASSWORD)
-    n = client.get_nation(electiondate)
+    n = client.get_topofticket(electiondate)
     
     
     # Detail county results

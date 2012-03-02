@@ -1,1 +1,2 @@
 latimes-calculate==0.1.8
+python-dateutil==1.5
