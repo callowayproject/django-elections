@@ -16,6 +16,7 @@ import calculate
 from ftplib import FTP
 from datetime import date
 from cStringIO import StringIO
+from dateutil.parser import parse as dateparse
 
 
 class AP(object):
@@ -79,12 +80,16 @@ class AP(object):
         self.ftp.quit()
         return results
     
-    def get_nation(self, election_date, **kwargs):
+    def get_topofticket(self, election_date, **kwargs):
         """
-        Takes a date in the format YYYYMMDD and returns the results for that
-        primary
+        Takes a date in any common format (YYYY-MM-DD is preferred) 
+        and returns the results for that date.
         """
-        result = Nation(self, election_date, **kwargs)
+        try:
+            dt = dateparse(election_date)
+        except ValueError:
+            raise ValueError("The election date you've submitted could not be parsed. Try submitting it in YYYY-MM-DD format.")
+        result = TopOfTicket(self, dt.strftime("%Y%m%d"), **kwargs)
         self.ftp.quit()
         return result
     
@@ -107,10 +112,12 @@ class AP(object):
         try:
             self.ftp.retrbinary(cmd, buffer_.write)
         except Exception, e:
-            if "550 The system cannot find the path specified" in e.message:
+            print cmd
+            if "550 The system cannot find the" in e.message:
                 raise FileDoesNotExistError("The file you've requested does not exist." +
                     " If you're looking for data about a state, make sure you" +
-                    " input valid postal codes.")
+                    " input valid postal codes. If you're looking for a date," +
+                    " make sure it's correct.")
             elif "530 User cannot log in" in e.message:
                 raise BadCredentialsError("The username and password you submitted" +
                 " are not accepted by the AP's FTP.")
@@ -212,13 +219,20 @@ class AP(object):
         return list(itertools.izip_longest(*args, fillvalue=fillvalue))
 
 
-class State(object):
+class BaseAPResults(object):
     """
-    One of these United States.
+    Base class that defines the methods to retrieve AP CSV 
+    data and shared properties and methods for State and 
+    TopOfTicket objects.
     
-    Returned by the AP client in response to a `get_state` or `get_states`
-    call. Contains, among its attributes, the results for all races recorded
-    by the AP.
+    Any class that inherits from BaseAPResults must define
+    these paths before it calls the parent __init__:
+        
+        * self.results_file_path
+        * self.delegates_file_path
+        * self.race_file_path
+        * self.reporting_unit_file_path
+        * self.candidate_file_path
     """
     
     def __init__(self, client, name, results=True, delegates=True):
@@ -232,11 +246,11 @@ class State(object):
             self.leading_zero_fips = False
         self._races = {}
         self._reporting_units = {}
-        self.results_file_path = "/%(name)s/flat/%(name)s.txt" % {'name': name}
-        self.delegates_file_path = "/%(name)s/flat/%(name)s_D.txt" % {'name': name}
-        self.race_file_path = "/inits/%(name)s/%(name)s_race.txt" % {'name': name}
-        self.reporting_unit_file_path = "/inits/%(name)s/%(name)s_ru.txt" % {'name': name}
-        self.candidate_file_path = "/inits/%(name)s/%(name)s_pol.txt" % {'name': name}
+        # self.results_file_path = "/%(name)s/flat/%(name)s.txt" % {'name': name}
+        # self.delegates_file_path = "/%(name)s/flat/%(name)s_D.txt" % {'name': name}
+        # self.race_file_path = "/inits/%(name)s/%(name)s_race.txt" % {'name': name}
+        # self.reporting_unit_file_path = "/inits/%(name)s/%(name)s_ru.txt" % {'name': name}
+        # self.candidate_file_path = "/inits/%(name)s/%(name)s_pol.txt" % {'name': name}
         self._init_races()
         self._init_reporting_units()
         self._init_candidates()
@@ -262,7 +276,7 @@ class State(object):
     @property
     def races(self):
         """
-        Returns a list of all the races reporting results in this state.
+        Returns a list of all the races reporting results.
         """
         return self._races.values()
 
@@ -273,7 +287,7 @@ class State(object):
         try:
             return self._races[ap_race_number]
         except KeyError:
-            raise KeyError("The race you requested does not exist.")
+            raise KeyError("The race you requested, %s, does not exist." % ap_race_number)
 
     def filter_races(self, **kwargs):
         """
@@ -309,7 +323,9 @@ class State(object):
     @property
     def counties(self):
         """
-        Gets all reporting units that can be defined as counties.
+        Gets all reporting units that can be defined as counties (read: !states).
+        Also does a crosswalk to aggregate New England ReportingUnits into their
+        respective counties. 
         """
         # Filter out the state level data
         ru_list = [o for o in self.reporting_units if o.fips and not o.is_state]
@@ -390,6 +406,7 @@ class State(object):
         # Loop through it all
         for race in race_list:
             # Create a Race object...
+            print "Creating race: ", race['ra_number']
             race = Race(
                 ap_race_number = race['ra_number'],
                 office_name = race['ot_name'],
@@ -398,12 +415,12 @@ class State(object):
                 race_type = race['race_id'],
                 seat_name = race['se_name'],
                 seat_number = race['se_number'],
+                state_postal = race.get('st_postal', None),
                 scope = race['of_scope'],
                 date = date(*map(int, [race['el_date'][:4], race['el_date'][4:6], race['el_date'][6:]])),
                 num_winners = int(race['ra_num_winners']),
                 party = race['rt_party_name'],
                 uncontested = race['ra_uncontested'] == '1',
-                state = race['st_postal'],
             )
             # And add it to the global store
             self._races.update({race.ap_race_number: race})
@@ -415,12 +432,13 @@ class State(object):
         # Get the data
         ru_list = self.client._fetch_csv(self.reporting_unit_file_path)
         # Loop through them all
-        for race in self.races:
+        for r in ru_list:
+            # if `st_postal` is in the dict, we're getting Top of the Ticket data,
+            # so we want to put reportingunits in the state they belong to.
+            # otherwise stuff the RUs into all of the races, as they're all in the same state.
+            races = self.filter_races(state_postal=r.get('st_postal', None)) or self.races
             # Create ReportingUnit objects for each race
-            for r in ru_list:
-                if r['st_postal'] != race._state:
-                    continue
-                
+            for race in races:
                 ru = ReportingUnit(
                     name = r['ru_name'],
                     ap_number = r['ru_number'],
@@ -430,19 +448,19 @@ class State(object):
                     num_reg_voters = int(r['ru_reg_voters']),
                 )
                 # And add them to the global store
-                race._reporting_units.update({ru.ap_number: ru})
-                # We add a set of reportingunits for the State object
-                # so you can get county and state voter info from the
-                # State object itself. 
-                ru = ReportingUnit(
-                    name = r['ru_name'],
-                    ap_number = r['ru_number'],
-                    fips = r['ru_fip'],
-                    abbrev = r['ru_abbrv'],
-                    precincts_total = int(r['ru_precincts']),
-                    num_reg_voters = int(r['ru_reg_voters']),
-                )
-                self._reporting_units.update({ru.ap_number: ru})
+                race._reporting_units.update({ru.key: ru})
+            # We add a set of reportingunits for the State object
+            # so you can get county and state voter info from the
+            # State object itself. 
+            ru = ReportingUnit(
+                name = r['ru_name'],
+                ap_number = r['ru_number'],
+                fips = r['ru_fip'],
+                abbrev = r['ru_abbrv'],
+                precincts_total = int(r['ru_precincts']),
+                num_reg_voters = int(r['ru_reg_voters']),
+            )
+            self._reporting_units.update({ru.key: ru})
     
     def _get_flat_delegates(self):
         """
@@ -509,6 +527,7 @@ class State(object):
         Download, parse and structure the state and county votes totals.
         """
         # Download the data
+        print "Fetching results file:", self.results_file_path
         flat_list = self.client._fetch_flatfile(
             self.results_file_path,
             [ # First the basic fields that will the same in each row
@@ -553,15 +572,16 @@ class State(object):
         
         # Start looping through the lines...
         for row in flat_list:
-            
             # Get the race
-            race = self.get_race(row['race_number'])
+            try:
+                race = self.get_race(row['race_number'])
+            except KeyError:
+                continue
             
             # Figure out if it's a state or a county
             fips =row['fips']
             is_state = row['county_number'] == '1'
             county_number = str(row['county_number'])
-            state = row['state_postal']
             
             # AP stupidly strips leading 0s in the FIPS for the 
             # results file. This fixes em.
@@ -572,8 +592,7 @@ class State(object):
 #                    fips = '0' + fips
             
             # Pull the reporting unit
-            reporting_unit = race.get_reporting_unit(county_number)
-            
+            reporting_unit = race.get_reporting_unit("%s%s" % (row['county_name'], county_number))
             # Loop through all the candidates
             votes_cast = 0
             for cand in row['candidates']:
@@ -630,48 +649,43 @@ class State(object):
                     votes_cast
                 )
 
-class Nation(State):
+class State(BaseAPResults):
+    """
+    One of these United States.
+    
+    Returned by the AP client in response to a `get_state` or `get_states`
+    call. Contains, among its attributes, the results for all races recorded
+    by the AP.
+    """
+
+    def __init__(self, client, name, results=True, delegates=True):
+        self.results_file_path = "/%(name)s/flat/%(name)s.txt" % {'name': name}
+        self.delegates_file_path = "/%(name)s/flat/%(name)s_D.txt" % {'name': name}
+        self.race_file_path = "/inits/%(name)s/%(name)s_race.txt" % {'name': name}
+        self.reporting_unit_file_path = "/inits/%(name)s/%(name)s_ru.txt" % {'name': name}
+        self.candidate_file_path = "/inits/%(name)s/%(name)s_pol.txt" % {'name': name}
+        super(State, self).__init__(client, name, results, delegates)
+
+
+class TopOfTicket(BaseAPResults):
     """
     These United States.
     
-    Returned by the AP client in response to a `get_national`
+    Returned by the AP client in response to a `get_topofticket`
     call. Contains, among its attributes, the results for all races recorded
     by the AP.
     """
     def __init__(self, client, name, results=True, delegates=True):
-        self.client = client
-        self.name = name
-        # The AP results files for these 7 states are missing
-        # the leading 0 on the county FIPS codes.
-        if self.name in ('AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT'):
-            self.leading_zero_fips = True
-        else:
-            self.leading_zero_fips = False
         self.results_file_path = "/Delegate_Tracking/US/flat/US_%(name)s.txt" % {'name': name}
         self.delegates_file_path = "/Delegate_Tracking/US/flat/US_%(name)s_d.txt" % {'name': name}
         self.race_file_path = "/inits/US/US_%(name)s_race.txt" % {'name': name}
         self.reporting_unit_file_path = "/inits/US/US_%(name)s_ru.txt" % {'name': name}
         self.candidate_file_path = "/inits/US/US_%(name)s_pol.txt" % {'name': name}
-        self._races = {}
-        self._reporting_units = {}
-        self._init_races()
-        self._init_reporting_units()
-        self._init_candidates()
-        
-        if results:
-            self.fetch_results()
-        # Fetches delegates for any Primary or Caucus races
-        if delegates and self.filter_races(is_general=False):
-            self.fetch_delegates()
-
-    def __unicode__(self):
-        return unicode(self.name)
-
-    def __str__(self):
-        return self.__unicode__().encode("utf-8")
-
-    def __repr__(self):
-        return '<%s: %s>' % (self.__class__.__name__, self.__unicode__())
+        super(TopOfTicket, self).__init__(client, name, results, delegates)
+    
+    @property
+    def states(self):
+        return [o for o in self._reporting_units.values() if o.is_state]
 
 
 class Race(object):
@@ -690,27 +704,28 @@ class Race(object):
         'R': 'GOP Primary',
         'G': 'General Election',
         'E': 'Dem Caucus',
-        'S': 'GOP Caucus'
+        'S': 'GOP Caucus',
+        'L': 'Libertarian', # Not documented by the AP, but that's what it appears to be.
     }
 
     def __init__(self, ap_race_number=None, office_name=None, office_description=None,
-                 office_id=None, seat_name=None, seat_number=None, scope=None,
+                 office_id=None, seat_name=None, seat_number=None, state_postal=None, scope=None,
                  date=None, num_winners=None, race_type=None, party=None, uncontested=None,
                  precincts_total=None, precincts_reporting=None,
-                 precincts_reporting_percent=None, votes_cast=None, state=None):
+                 precincts_reporting_percent=None, votes_cast=None):
         self.ap_race_number = ap_race_number
         self.office_name = office_name
         self.office_description = office_description
         self.office_id = office_id
         self.seat_name = seat_name
         self.seat_number = seat_number
+        self.state_postal = state_postal
         self.scope = scope
         self.date = date
         self.num_winners = num_winners
         self.race_type = race_type
         self.party = party
         self.uncontested = uncontested
-        self._state = state
         self._candidates = {}
         self._reporting_units = {}
     
@@ -773,9 +788,6 @@ class Race(object):
         """
         Returns the state-level results for this race as a ReportingUnit object.
         """
-        # if self._state:
-        #     return self._state
-        # else:
         return [o for o in self.reporting_units if o.is_state][0]
     
     @property
@@ -796,7 +808,7 @@ class Race(object):
             for ru in ru_list:
                 try:
                     d[ru.fips].append(ru)
-                except:
+                except KeyError:
                     d[ru.fips] = [ru]
             county_list = []
             for county, units in d.items():
@@ -820,7 +832,7 @@ class Race(object):
                     for result in unit.results:
                         try:
                             cands[result.candidate.ap_polra_number].append(result)
-                        except:
+                        except KeyError:
                             cands[result.candidate.ap_polra_number] = [result]
                 for ap_polra_number, results in cands.items():
                     combined = Result(
@@ -892,6 +904,10 @@ class ReportingUnit(object):
     
     def __repr__(self):
         return '<%s: %s>' % (self.__class__.__name__, self.__unicode__())
+
+    @property
+    def key(self):
+        return "%(name)s%(ap_number)s" % self.__dict__
     
     @property
     def results(self):
@@ -1017,6 +1033,22 @@ COUNTY_CROSSWALK = {
         '33015': 'Rockingham',
         '33017': 'Strafford',
         '33019': 'Sullivan',
+    },
+    'VT': {
+        '50001': 'Addison',
+        '50003': 'Bennington',
+        '50005': 'Caledonia',
+        '50007': 'Chittenden',
+        '50009': 'Essex',
+        '50011': 'Franklin',
+        '50013': 'Grand Isle',
+        '50015': 'Lamoille',
+        '50017': 'Orange',
+        '50019': 'Orleans',
+        '50021': 'Rutland',
+        '50023': 'Washington',
+        '50025': 'Windham',
+        '50027': 'Windsor',
     }
 }
 
