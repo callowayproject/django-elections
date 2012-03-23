@@ -246,11 +246,6 @@ class BaseAPResults(object):
             self.leading_zero_fips = False
         self._races = {}
         self._reporting_units = {}
-        # self.results_file_path = "/%(name)s/flat/%(name)s.txt" % {'name': name}
-        # self.delegates_file_path = "/%(name)s/flat/%(name)s_D.txt" % {'name': name}
-        # self.race_file_path = "/inits/%(name)s/%(name)s_race.txt" % {'name': name}
-        # self.reporting_unit_file_path = "/inits/%(name)s/%(name)s_ru.txt" % {'name': name}
-        # self.candidate_file_path = "/inits/%(name)s/%(name)s_pol.txt" % {'name': name}
         self._init_races()
         self._init_reporting_units()
         self._init_candidates()
