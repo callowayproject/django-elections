@@ -783,7 +783,13 @@ class Race(object):
         """
         Returns the state-level results for this race as a ReportingUnit object.
         """
-        return [o for o in self.reporting_units if o.is_state][0]
+        states = [o for o in self.reporting_units if o.is_state]
+        if len(states) == 1:
+            return states[0]
+        else:
+            for s in states:
+                if s.abbrev == self.state_postal:
+                    return s
     
     @property
     def counties(self):
