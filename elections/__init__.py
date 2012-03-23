@@ -3,8 +3,8 @@ django-elections
 """
 __version_info__ = {
     'major': 0,
-    'minor': 4,
-    'micro': 1,
+    'minor': 5,
+    'micro': 0,
     'releaselevel': 'final',
     'serial': 1
 }

@@ -1,46 +1,102 @@
 # n.races[0].reporting_units[0].results
 from elections.ap import AP
-from elections.settings import FTP_USER, FTP_PASSWORD
-import json
-import pprint
+from elections.settings import FTP_USER, FTP_PASSWORD, MAP_RESULTS_DEST
+import os
+try:
+    import json
+except ImportError:
+    import simplejson as json
 
 colors = ['#8DD3C7', '#FFFFB3', '#BEBADA', '#FB8072', '#80B1D3', '#FDB462', 
-'#B3DE69', '#FCCDE5', '#D9D9D9', '#BC80BD', '#CCEBC5', '#FFED6F', ]
-county_results = {} # key = county number
-county_winners = {} # key = county number, 
-candidate_colors = {}
-legend_tmpl = "<tr><td style='width=32px;background-color:%s'>&nbsp;</td><td>%s</td></tr>"
-legend = ['<table id="legendtable">']
+'#B3DE69', '#FCCDE5', '#D9D9D9', '#BC80BD', '#CCEBC5', '#FFED6F', '#8DD3C7', '#FFFFB3', '#BEBADA', '#FB8072', '#80B1D3', '#FDB462', 
+'#B3DE69', '#FCCDE5', '#D9D9D9', '#BC80BD', '#CCEBC5', '#FFED6F','#8DD3C7', '#FFFFB3', '#BEBADA', '#FB8072', '#80B1D3', '#FDB462', 
+'#B3DE69', '#FCCDE5', '#D9D9D9', '#BC80BD', '#CCEBC5', '#FFED6F','#8DD3C7', '#FFFFB3', '#BEBADA', '#FB8072', '#80B1D3', '#FDB462', 
+'#B3DE69', '#FCCDE5', '#D9D9D9', '#BC80BD', '#CCEBC5', '#FFED6F','#8DD3C7', '#FFFFB3', '#BEBADA', '#FB8072', '#80B1D3', '#FDB462', 
+'#B3DE69', '#FCCDE5', '#D9D9D9', '#BC80BD', '#CCEBC5', '#FFED6F',]
+legend_tmpl = "<tr><td style='width=32px;background-color:%(color)s'>&nbsp;</td><td>%(name)s</td><td>%(vote_total)s</td><td>%(vote_percent)#.2f%%</td></tr>"
 
-# Use county_winners to color states using candidate_colors
-client = AP(FTP_USER, FTP_PASSWORD)
-n = client.get_nation('20120103')
 
-for i, cand in enumerate(n.races[0].candidates):
-    candidate_colors[cand.ap_pol_number] = colors[i]
-    legend.append(legend_tmpl % (colors[i], cand.name))
-legend.append('</table>')
-
-# Detail county results
-for county in n.races[0].reporting_units:
-    winning_votes = 0
-    county_results[county.fips] = []
-    for result in county.results:
-        if county.is_state:
-            continue
-        county_results[county.fips].append({
-            "name": result.candidate.name,
-            "vote_total": result.vote_total,
-            "vote_total_percent": round(result.vote_total_percent, 1)
+def parse_race(race):
+    """
+    Loop through the reporting units and return a dict for output
+    """
+    county_results = {} # key = county number
+    county_winners = {} # key = county number, 
+    candidate_colors = {}
+    legend = ['<table id="legendtable">']
+    candidates = []
+    total_votes = 0
+    
+    for i, cand in enumerate(race.candidates):
+        cand_vote_total = getattr(cand, 'vote_total', 0)
+        total_votes += cand_vote_total
+        candidate_colors[cand.ap_natl_number] = colors[i]
+        candidates.append({
+            'name': cand.name, 
+            'color': colors[i], 
+            'vote_total': cand_vote_total, 
+            'vote_percent': 0, 
+            'delegates': cand.delegates,
         })
-        if result.vote_total > winning_votes:
-            winning_votes = result.vote_total
-            county_winners[county.fips] = result.candidate.ap_pol_number
-    county_results[county.fips].sort(key=lambda x: x['vote_total'], reverse=True)
-f = open("election.json", "w")
-f.write(json.dumps({
-    "candidate_colors": candidate_colors, 
-    "legend": "".join(legend),
-    "county_results": county_results,
-    "county_winners": county_winners}))
-f.close()
+    candidate_colors['No winner'] = "#999"
+    candidates.sort(key=lambda x: x['vote_total'], reverse=True)
+    for cand in candidates:
+        if total_votes:
+            cand['vote_percent'] = round(cand['vote_total']/float(total_votes) * 100, 1) 
+        else:
+            cand['vote_percent'] = 0.0
+        legend.append(legend_tmpl % cand)
+    legend.append('</table>')
+    
+    for county in race.counties:
+        winning_votes = 0
+        county_results[county.fips] = {
+            "name": county.name,
+            "precincts_reporting": county.precincts_reporting,
+            "precincts_reporting_percent": county.precincts_reporting_percent,
+            "precincts_total": county.precincts_total,
+            "results": []
+        }
+        for result in county.results:
+            if result.vote_total is None:
+                vote_total = 0
+            else:
+                vote_total = result.vote_total
+            if result.vote_total_percent is None:
+                vote_total_percent = 0.0
+            else:
+                vote_total_percent = result.vote_total_percent
+            county_results[county.fips]['results'].append({
+                "ap_natl_number": result.candidate.ap_natl_number,
+                "name": result.candidate.name,
+                "vote_total": vote_total,
+                "vote_total_percent": round(vote_total_percent, 1),
+            })
+            if vote_total > winning_votes:
+                winning_votes = vote_total
+                county_winners[county.fips] = result.candidate.ap_natl_number
+            elif vote_total == winning_votes:
+                county_winners[county.fips] = 'No winner'
+        county_results[county.fips]['results'].sort(key=lambda x: x['vote_total'], reverse=True)
+    
+    return {
+        "candidate_colors": candidate_colors, 
+        "legend": "".join(legend),
+        "county_results": county_results,
+        "county_winners": county_winners
+    }
+
+def write_results(electiondate):
+    # Use county_winners to color states using candidate_colors
+    client = AP(FTP_USER, FTP_PASSWORD)
+    n = client.get_topofticket(electiondate)
+    
+    
+    # Detail county results
+    for race in n.races:
+        party = race.party
+        state = race.state.abbrev
+        results = parse_race(race)
+        f = open(os.path.join(MAP_RESULTS_DEST, "%s-%s-%s.json" % (electiondate, party, state)), "w")
+        f.write(json.dumps(results))
+        f.close()
